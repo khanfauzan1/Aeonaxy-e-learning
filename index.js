@@ -576,7 +576,7 @@ app.post("/reset-password", authenticateUser, async (req, res) => {
 
     // Generate and send password reset email using resend
     const resetToken = generateToken(user.rows[0].id, user.rows[0].email);
-    const resetLink = `https://your-app.com/${resetToken}`;
+    const resetLink = `https://aeonaxy-e-learning.onrender.com/${resetToken}`;
 
     const mailOptions = {
       from: "Your App <ahmaadkhan736@gmail.com>",
