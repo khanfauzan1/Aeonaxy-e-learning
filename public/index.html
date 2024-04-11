@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aeonaxy E-Learning API Documentation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    pre {
+      background-color: #f4f4f4;
+      padding: 10px;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>Aeonaxy E-Learning API Documentation</h1>
+  <p>Welcome to Aeonaxy E-Learning platform where users can register and get enrolled in any course from list of courses available to it.</p>
+  <p>Its root route is 'https://aeonaxy-e-learning.onrender.com'</p>
+
+  <h2>POST /register</h2>
+  <p>Registers a new user. If the username or email is already taken, it will return an error.</p>
+  <h3>Request Body:</h3>
+  <pre>{ "username": "The username of the new user.", "email": "The email of the new user.", "password": "The password of the new user." }</pre>
+  <h3>Example Response: On successful registration</h3>
+  <pre>{ "message": "Registration successful. Check your email for confirmation." }</pre>
+
+  <h2>POST /register/superadmin</h2>
+  <p>Registers a new superadmin user. If the username or email is already taken, it will return an error.</p>
+  <h3>Request Body:</h3>
+  <pre>{ "username": "The username of the new user.", "email": "The email of the new user.", "password": "The password of the new user.", "pass": "The unique pass-key for superadmin registration" }</pre>
+  <h3>Example Response: On successful registration</h3>
+  <pre>{ "message": "Superadmin user registered successfully" }</pre>
+
+  <h2>POST /login</h2>
+  <p>Login an existing user.</p>
+  <h3>Request Body:</h3>
+  <pre>{ "email": "The email of the new user.", "password": "The password of the new user." }</pre>
+  <h3>Example Response: On successful login</h3>
+  <pre>{
+    token, // token generated using jwt. This token will be used for userAuthentication
+    message: "user logged in"
+}</pre>
+
+  <h2>GET /users/:userId</h2>
+  <p>Returns the with details of user with particular userId. Bearer token authentication is required done using authenticateUser middleware.</p>
+
+  <h2>PATCH /users/:userId</h2>
+  <p>Update the user details. Bearer token authentication is required done using authenticateUser middleware.</p>
+  <h3>Request Body:</h3>
+  <pre>{ "email": "The new email of the existing user.", "username": "The username of the existing user." }</pre>
+  <h3>Example Response: On successful updation</h3>
+  <pre>{
+    message: "User profile updated successfully", updatedUser: result.rows[0], // updated user details
+}</pre>
+
+  <h2>POST /courses</h2>
+  <p>Add a new course in list of courses. This can be done only by superadmin which is done by authenticateSuperadmin middleware. Also Bearer token authentication is required done using authenticateUser middleware.</p>
+  <h3>Request Body:</h3>
+  <pre>{ "name": "The name of the new course.", "description": "The description of the new course.", "category" : "The category of the new course, "level" : "The level of the new course" }</pre>
+  <h3>Example Response: On successful adding the course</h3>
+  <pre>{
+    newCourse: result.rows[0], // new course details
+}</pre>
+
+  <h2>GET /courses</h2>
+  <p>Get all courses details up to a certain limit.</p>
+  <h3>Request Body:</h3>
+  <pre>{ category, level, sortBy, page = 1, limit = 10 }</pre>
+
+  <h2>GET /courses/:courseId</h2>
+  <p>Get a particular course details by using courseId.</p>
+
+  <h2>PATCH /courses/:courseId</h2>
+  <p>Update a particular course. This can be done only by superadmin which is done by authenticateSuperadmin middleware. Also Bearer token authentication is required done using authenticate user middleware. Similar to adding a new course.</p>
+
+  <h2>DELETE /courses/:courseId</h2>
+  <p>Delete a particular course. Similar to updating a course.</p>
+
+  <h2>POST /enrollments</h2>
+  <p>For enrolling in a particular course by the user. Bearer token authentication is required done using authenticate user middleware.</p>
+
+  <h2>GET /enrollments</h2>
+  <p>Getting user enrolled courses. Bearer token authentication is required done using authenticate user middleware.</p>
+
+  <h2>POST /reset-password</h2>
+  <p>For changing the password of user. Bearer token authentication is required done using authenticate user middleware.</p>
+  <p>Response: A email will be sent to user email address which contains a link for changing the password.</p>
+
+  <h2>PUT /reset-password/:token</h2>
+  <p>Link where user can enter their new password.</p>
+  <h3>Request Body:</h3>
+  <pre>{ password }</pre>
+
+  <h2>POST /upload</h2>
+  <p>User can upload their profile image. Bearer token authentication is required done using authenticate user middleware.</p>
+  <p>User has to upload a file having .jpeg or .png extension. Uploaded image will be saved on <strong>cloudinary</strong>. There will be an imageUrl generated for that uploaded image file.</p>
+
+</body>
+</html>

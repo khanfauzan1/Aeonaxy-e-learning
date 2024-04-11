@@ -1,6 +1,7 @@
 // Import required modules
 const express = require("express");
 const app = express();
+const path = require("path")
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
@@ -13,6 +14,9 @@ const nodemailer = require("nodemailer");
 // Configure middleware
 app.use(bodyParser.json());
 app.use(cors());
+// Serve static files from the public directory
+app.use(express.static(path.join(__dirname, 'public')));
+
 /// nodemailer
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -122,6 +126,12 @@ const storage = new CloudinaryStorage({
 
 // Initialize multer with Cloudinary storage
 const upload = multer({ storage });
+
+// root route 
+
+app.get('/',async(req,res)=>{
+  res.sendFile(__dirname + "/public/index.html");
+})
 
 // Route for file upload
 app.post(
