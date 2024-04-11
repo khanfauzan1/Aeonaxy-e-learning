@@ -573,7 +573,7 @@ app.get("/enrollments", authenticateUser, async (req, res) => {
 
 // Password reset
 app.post("/reset-password", authenticateUser, async (req, res) => {
-  const { email } = req.body;
+  const email= req.email;
 
   try {
     const user = await pool.query("SELECT * FROM users WHERE email = $1", [
